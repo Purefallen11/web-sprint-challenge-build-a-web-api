@@ -16,6 +16,22 @@ const validateId = async (req, res, next) => {
     }
 }
 
+const validateProjectBody = (req, res, next) => {
+    const newProject = req.body
+    if (!newProject) {
+        res.status(404).json('body is required')
+    } else {
+        Project.insert(newProject)
+            .then(project => {
+                req.newproject = project
+            res.status(201).json(project)
+            next()
+            })
+    }
+
+}
+
 module.exports = {
-    validateId
+    validateId,
+    validateProjectBody
 }
