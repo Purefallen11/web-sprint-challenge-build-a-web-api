@@ -17,18 +17,17 @@ const validateId = async (req, res, next) => {
 }
 
 const validateProjectBody = (req, res, next) => {
-    const newProject = req.body
-    if (!newProject) {
-        res.status(404).json('body is required')
+    const project = req.body
+    if (!project.name) {
+        res.status(400).json('name is required')
+    } else if(!project.description) {
+        res.status(400).json('description is required')
     } else {
-        Project.insert(newProject)
-            .then(project => {
-                req.newproject = project
-            res.status(201).json(project)
-            next()
-            })
+        req.name = project.name
+        req.description = project.description
+        req.completed = project.completed
+        next()
     }
-
 }
 
 module.exports = {

@@ -27,4 +27,17 @@ router.post('/', validateProjectBody, (req, res) => {
     res.json(req.newproject)
 })
 
+router.put('/:id', validateId, validateProjectBody, (req, res) => {
+    const { id } = req.params
+    const changes = req.body
+
+    Project.update(id, changes)
+        .then(() => {
+        res.status(200).json(changes)
+        }).catch(() => {
+        res.status(500).json('project information could not be modified')
+    })
+    
+})
+
 module.exports = router
