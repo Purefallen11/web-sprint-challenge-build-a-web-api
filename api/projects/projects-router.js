@@ -37,7 +37,34 @@ router.put('/:id', validateId, validateProjectBody, (req, res) => {
         }).catch(() => {
         res.status(500).json('project information could not be modified')
     })
-    
+})
+
+router.delete('/:id', validateId, (req, res) => {
+    const {id} = req.params
+    Project.delete(id)
+        .then((deletedProject) => {
+            if (!deletedProject) {
+            res.status(404).json(`could not find project with id ${id}`)
+            } else {
+                res.status(200).json(deletedProject)
+        }
+        }).catch(() => {
+        res.status(500).json('there was an error deleting the project')
+    })
+})
+
+router.get('/:id/actions', (req, res) => {
+    const { id } = req.params
+    Project.getProjectActions(id)
+        .then(projectAction => {
+            if (!projectAction) {
+            res.status(404).json(`could not find ${projectAction}`)
+            } else {
+                res.status(200).json(projectAction)
+        }
+        }).catch(() => {
+        res.status(500).json('could not retrieve project actions')
+    })
 })
 
 module.exports = router
