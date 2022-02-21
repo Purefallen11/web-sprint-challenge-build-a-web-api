@@ -1,7 +1,9 @@
 const Project = require('./projects-model')
 const express = require('express')
-
+const {validateId} = require('./projects-middleware')
 const router = express.Router()
+
+//endpoints
 
 router.get('/', (req, res) => {
     Project.get()
@@ -11,6 +13,15 @@ router.get('/', (req, res) => {
         .catch(err => {
         res.status(500).json({message: err.message})
     })
+})
+
+router.get('/:id', validateId, (req, res) => {
+    try {
+        res.status(200).json(req.project)
+    } catch (err) {
+        res.status(500).json('there was a problem retrieving the project')
+    }
+    
 })
 
 module.exports = router
